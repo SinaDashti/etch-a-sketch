@@ -1,0 +1,60 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body,
+main {
+  display: grid;
+  justify-items: center;
+  margin-top: 20px;
+  background-color: rgba(245, 245, 237, 0.993);
+}
+
+.container {
+  background-color: rgba(245, 245, 237, 0.356);
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  grid-template-rows: repeat(16, 1fr);
+  width: 500px;
+  height: 500px;
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.sqr {
+  display: grid;
+  border: 1px solid rgba(245, 245, 237, 0.356);
+  background-color: hsl(0, 0%, 100%);
+  padding: 0px;
+  width: 31.25px;
+  height: 31.25px;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  padding: 5px;
+  font-size: large;
+  background-color: rgb(165, 168, 147);
+}
+
+#myBtn:hover,
+#sizeBtn:hover {
+  background-color: rgb(255, 0, 0);
+  cursor: pointer;
+  border-radius: 2px;
+  font-weight: bold;
+}
+
+#sizeBtn:hover {
+  background-color: rgb(157, 255, 0);
+}
+
+#myBtn:hover {
+  background-color: rgb(255, 0, 0);
+}
