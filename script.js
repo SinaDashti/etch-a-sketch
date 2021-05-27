@@ -1,5 +1,5 @@
 let container = document.getElementById('container');
-const resetButton = document.getElementById("myBtn");
+const resetButton = document.getElementById("resetBtn");
 const sizeButton = document.getElementById("sizeBtn");
 let gridSize = 16;
 
