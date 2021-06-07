@@ -7,6 +7,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   --button-color: #0074d9;
+  /* font: 300 24px/1.5 Lato, sans-serif; */
 }
 
 body,
@@ -19,7 +20,7 @@ main {
 body {
   background: rgb(2, 0, 36);
   background: rgb(2, 0, 36);
-  height: 100vh;
+  height: 50vh;
   background: #3d7eaa; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,
@@ -34,12 +35,18 @@ body {
 }
 
 main {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap:10px;
   background-color: transparent;
+  margin: 0;
 }
 
 h1 {
   color: #001f3f;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: large;
+  margin: 0;
 }
 
 .container {
@@ -64,6 +71,17 @@ h1 {
   justify-content: center;
   align-items: center;
 }
+
+#options{
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 500px;
+  height: 500px;
+  /* justify-items: center; */
+  /* align-items: center; */
+  justify-content: start;
+}
 /* Buttons */
 button {
   display: inline-block;
@@ -71,12 +89,15 @@ button {
   background: none;
   border: none;
   color: var(--button-color);
-  font-size: 18px;
+  font-size: 14px;
   cursor: pointer;
+
+isolation: isolate;
+
 }
 span {
   display: block;
-  padding: 15px 60px;
+  padding: 2px 8px;
   font-size: larger;
 }
 
@@ -145,22 +166,22 @@ button:hover span::after {
 .resetBtn::before {
   left: 50%;
   top: 0;
-  transition-duration: 0.4s;
+  transition-duration: 0.3s;
 }
 .resetBtn::after {
   left: 50%;
   bottom: 0;
-  transition-duration: 0.4s;
+  transition-duration: 0.3s;
 }
 .resetBtn span::before {
   left: 0;
   top: 50%;
-  transition-duration: 0.4s;
+  transition-duration: 0.3s;
 }
 .resetBtn span::after {
   right: 0;
   top: 50%;
-  transition-duration: 0.4s;
+  transition-duration: 0.3s;
 }
 .resetBtn:hover::before,
 .resetBtn:hover::after {
@@ -172,6 +193,7 @@ button:hover span::after {
 }
 
 #sizeBtn,
-#resetBtn {
-  margin: 20px 20px;
+#resetBtn{
+  margin: 10px 10px;
 }
+
