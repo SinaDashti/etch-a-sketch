@@ -1,16 +1,24 @@
 let container = document.getElementById('container');
 let mode = Array.from(document.getElementsByName('mode'));
 let containerSize = document.getElementById('size');
-const resetButton = document.getElementById("resetBtn");
-const sizeButton = document.getElementById("sizeBtn");
+let colorPicker = document.getElementById('favcolor');
+let randomPicker = document.getElementById('default');
+let rangeSize = document.getElementById('rangeSize');
+let rangeInput = document.getElementById('size');
+let sketchButton = document.getElementById('sketch');
+let eraseButton = document.getElementById('erase');
+let freezeButton = document.getElementById('freeze');
+let resetButton = document.getElementById("resetBtn");
+let sizeButton = document.getElementById("sizeBtn");
 let gridSize = 16;
 
-let containerStyle = function (cnt, gSize) {
+
+let containerStyle = (cnt, gSize) => {
     cnt.style.gridTemplateRows = `repeat(${gSize}, 1fr)`;
     cnt.style.gridTemplateColumns = `repeat(${gSize}, 1fr)`;
 }
 
-const gridCreate = function (cnt, gSize, first = true) {
+const gridCreate = (cnt, gSize, first = true) => {
     for (let i = 0; i < gSize * gSize; i++) {
         let squeare = document.createElement('div');
         cnt.appendChild(squeare);
@@ -25,33 +33,30 @@ const gridCreate = function (cnt, gSize, first = true) {
     }
 }
 
-const removeAll = function (cnt) {
+const removeAll = cnt => {
     while (cnt.firstChild) {
         cnt.removeChild(cnt.lastChild);
     }
 }
 
 
-const valueOff = function (e) {
+const valueOff = e => {
     if (e.key == 'Control') {
         container.setAttribute('value', 'off');
-        document.getElementById('freeze').checked = true;
-    }
-    else if (e.key == 'Shift') {
-        // container.getAttribute('value') == 'on' && 
+        freezeButton.checked = true;
+    } else if (e.key == 'Shift') {
         if (container.getAttribute('value') == 'on' && container.getAttribute('data-delete') == 'off') {
             container.setAttribute('data-delete', 'on');
-            document.getElementById('erase').checked = true;
+            eraseButton.checked = true;
         }
     };
 }
 
-const valueOn = function (e) {
-    document.getElementById('sketch').checked = true;
+const valueOn = e => {
+    sketchButton.checked = true;
     if (e.key == 'Control') {
         container.setAttribute('value', 'on');
-    }
-    else if (e.key == 'Shift') {
+    } else if (e.key == 'Shift') {
         if (container.getAttribute('value') == 'on' && container.getAttribute('data-delete') == 'on') {
             container.setAttribute('data-delete', 'off');
         }
@@ -59,36 +64,41 @@ const valueOn = function (e) {
 }
 
 
-const handleMousemove = (e) => {
-    if (container.getAttribute('value') == 'on') {
-        let r = Math.floor(Math.random() * 255);
-        let g = Math.floor(Math.random() * 255);
-        let b = Math.floor(Math.random() * 255);
-        e.target.style.backgroundColor = `rgb(${r},${g},${b})`;
-    }
+const handleMousemove = e => {
     if (container.getAttribute('data-delete') == 'on') {
         e.target.style.backgroundColor = `hsl(0, 0%, 100%)`;
+    } else {
+        if (container.getAttribute('value') == 'on' && container.getAttribute('data-random') == 'on') {
+            let r = Math.floor(Math.random() * 255);
+            let g = Math.floor(Math.random() * 255);
+            let b = Math.floor(Math.random() * 255);
+            e.target.style.backgroundColor = `rgb(${r},${g},${b})`;
+        }
+        if (container.getAttribute('value') == 'on' && container.getAttribute('data-random') == 'off') {
+            e.target.style.backgroundColor = colorPicker.getAttribute('value');
+        }
     }
+
 };
 
 
-const doublClickAction = (e) => {
+const doublClickAction = e => {
     e.target.style.backgroundColor = `hsl(0, 0%, 100%)`;
 }
 
 
-const resetAction = function () {
+const resetAction = () => {
     container.childNodes.forEach(e => {
         e.style.backgroundColor = `hsl(0, 0%, 100%)`;
     });
-    document.getElementById('sketch').checked = true;
+    sketchButton.checked = true;
 }
 
 
-const selectMode = function (e) {
+const selectMode = (e) => {
     if (e.target.value == 'sketch') {
         container.setAttribute('data-delete', 'off');
-        container.setAttribute('value', 'on')
+        container.setAttribute('value', 'on');
     }
     if (e.target.value == 'erase') {
         container.setAttribute('data-delete', 'on');
@@ -101,33 +111,48 @@ const selectMode = function (e) {
 }
 
 
-const promptAction = function () {
+const promptAction = () => {
     let answer = parseInt(prompt('Please choose an integer between bigger than 0 and less than 65'), 10);
-    if (answer == null || isNaN(answer) || answer < 0) {
-        alert('You should choose a postive integer!');
-        return 16;
-    } else if (answer >= 65) {
-        alert('You should choose a number between 1 and 64!');
-        return 16;
+    if (answer == null || isNaN(answer) || answer <= 0 || answer >= 65) {
+        alert('You should choose a postive integer between 1 and 64!');
     } else return answer;
 }
 
-const newRestart = function (size) {
-    removeAll(container);
-    containerStyle(container, size);
-    gridCreate(container, size, false);
-    addEventsToContainer(container);
-    document.getElementById('rangeSize').innerText = `${size} x ${size}`;
-    document.getElementById('size').value = `${size}`;
-    document.getElementById('sketch').checked = true;
+const updateUI = (size) => {
+    container.setAttribute('data-random', 'on');
+    rangeSize.innerText = `${size} x ${size}`;
+    rangeInput.value = `${size}`;
+    sketchButton.checked = true;
+    randomPicker.checked = true;
 }
 
-const changeSizeAction = function () {
+const newRestart = (size) => {
+    if (size) {
+        removeAll(container);
+        containerStyle(container, size);
+        gridCreate(container, size, false);
+        addEventsToContainer(container);
+        updateUI(size);
+    }
+}
+
+const changeSizeAction = () => {
     gridSize = promptAction();
     newRestart(gridSize);
 }
 
-const addEventsToContainer = function (cnt) {
+const setDataRandom = e => {
+    if (e.target.checked) container.setAttribute('data-random', 'on');
+    else container.setAttribute('data-random', 'off');
+}
+
+const colorPickerAction = e => {
+    colorPicker.setAttribute('value', e.target.value);
+    container.setAttribute('data-random', 'off');
+    randomPicker.checked = false;
+}
+
+const addEventsToContainer = (cnt) => {
     cnt.childNodes.forEach(element => {
         element.addEventListener('mouseover', handleMousemove);
         element.addEventListener('dblclick', doublClickAction);
@@ -142,10 +167,14 @@ resetButton.addEventListener("click", resetAction);
 sizeButton.addEventListener("click", changeSizeAction);
 
 mode.forEach(element => {
-    element.addEventListener('click', selectMode)
+    element.addEventListener('click', selectMode);
+    element.addEventListener('change', selectMode);
 });
 
-containerSize.addEventListener('change', (e) => {
+containerSize.addEventListener('change', e => {
     removeAll(container);
     newRestart(e.target.value);
 })
+
+colorPicker.addEventListener('change', colorPickerAction);
+randomPicker.addEventListener('change', setDataRandom);
