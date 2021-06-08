@@ -20,14 +20,14 @@ let containerStyle = (cnt, gSize) => {
 
 const gridCreate = (cnt, gSize, first = true) => {
     for (let i = 0; i < gSize * gSize; i++) {
-        let squeare = document.createElement('div');
-        cnt.appendChild(squeare);
-        squeare.setAttribute('id', `${i}`);
-        squeare.setAttribute('class', 'sqr');
-        currentSqueare = document.getElementById(`${i}`);
+        let square = document.createElement('div');
+        cnt.appendChild(square);
+        square.setAttribute('id', `${i}`);
+        square.setAttribute('class', 'sqr');
+        currentSquare = document.getElementById(`${i}`);
         if (!first) {
-            currentSqueare.style.width = `${(500 / gSize)}px`;
-            currentSqueare.style.height = `${(500 / gSize)}px`;
+            currentSquare.style.width = `${(500 / gSize)}px`;
+            currentSquare.style.height = `${(500 / gSize)}px`;
         }
 
     }
